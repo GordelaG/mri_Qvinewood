@@ -9,16 +9,16 @@ Config.AuthorizedGroups = {
         'admin'
     },
     identifier = { -- Only for standalone
-        'discord:638415863682170881'
+        'discord:123456789123456789'
     }
 }
 
 Config.Locales = {
     ['vinewood'] = "Vinewood",
-    ['sign'] = "Sign",
-    ['text'] = "Text",
-    ['color'] = "Color",
-    ['text_edited'] = "Text edited!",
+    ['sign'] = "Placa",
+    ['text'] = "Texto",
+    ['color'] = "Cor",
+    ['text_edited'] = "Text alterado!",
     ['type_text'] = "Vinewood"
 }
 
