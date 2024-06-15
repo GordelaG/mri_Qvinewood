@@ -14,7 +14,8 @@ const app = new Vue({
         notifySettings : {
             text : "",
             enable : false,
-        }
+        },
+        maxSize : 8
     },
 
     methods: {
@@ -46,7 +47,7 @@ const app = new Vue({
         checkText(event) {
             var string = this.textSettings.text
             var length = string.length
-            if(length > 7) {
+            if(length > app.maxSize-1) {
                 event.preventDefault()
                 return false
             }
@@ -61,7 +62,6 @@ const app = new Vue({
 
 });
 
-
 window.addEventListener('message', function(event) {
     var data = event.data;
     if (data.type === "OPEN") {
@@ -71,7 +71,7 @@ window.addEventListener('message', function(event) {
         }
 
         app.textSettings.color = data.color
-        app.textSettings.text = data.text 
+        app.textSettings.text = data.text
         $("#app").fadeIn(500)
     } else if(data.type === "UPDATE") {
 
@@ -80,9 +80,12 @@ window.addEventListener('message', function(event) {
         }
 
         app.textSettings.color = data.color
-        app.textSettings.text = data.text 
+        app.textSettings.text = data.text
     } else if(data.type === "SET_LOCALES") {
         app.locales = data.locales
+    } else if(data.type === "CONFIG") {
+        console.log(data.maxSize)
+        app.maxSize = data.maxSize
     }
 })
 

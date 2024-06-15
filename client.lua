@@ -1,18 +1,18 @@
 local ESX = nil
-local QBCore = nil 
+local QBCore = nil
 local FrameworkFound = nil
 local nuiOpen = false
 local modelCreated = {}
 
 LoadFramework = function()
-    if Config.Framework == 'esx' then 
+    if Config.Framework == 'esx' then
         ESX = exports['es_extended']:getSharedObject()
         FrameworkFound = 'esx'
-    elseif Config.Framework == 'qbcore' then 
+    elseif Config.Framework == 'qbcore' then
         QBCore = exports["qb-core"]:GetCoreObject()
         FrameworkFound = 'qbcore'
     elseif Config.Framework == 'autodetect' then
-        if GetResourceState('es_extended') == 'started' then 
+        if GetResourceState('es_extended') == 'started' then
             ESX = exports['es_extended']:getSharedObject()
             FrameworkFound = 'esx'
         elseif GetResourceState('qb-core') == 'started' then
@@ -44,6 +44,10 @@ AddEventHandler('ricky-vinewood:openNui', function(text, color)
         text = text,
         color = color
     })
+    SendNUIMessage({
+        type = "CONFIG",
+        maxSize = #Config.Coords
+    })
 end)
 
 RegisterNUICallback('saveText', function(data)
@@ -58,7 +62,7 @@ end)
 RegisterNetEvent('ricky-vinewood:saveText')
 AddEventHandler('ricky-vinewood:saveText', function(data)
     UpdateMap(data)
-    if nuiOpen then 
+    if nuiOpen then
         SendNUIMessage({
             type = "UPDATE",
             text = data[1],
@@ -74,6 +78,7 @@ AddEventHandler('onResourceStop', function(resource)
         end
     end
 end)
+
 
 hexToRgb = function(hex)
     hex = hex:gsub("#","")
@@ -92,9 +97,9 @@ UpdateMap = function(data)
     if not data then return end
     local completeText = data[1]
     if not completeText then return end
-    for i=1, #completeText, 1 do 
-        if i > 8 then 
-            return 
+    for i=1, #completeText, 1 do
+        if i > #Config.Coords then
+            return
         end
         local string = completeText:sub(i, i)
         local model = string
@@ -126,6 +131,6 @@ SetColorModel = function(model, textureName, colorRgb)
     else
         SetRuntimeTexturePixel(texture, 0, 0, colorRgb.r, colorRgb.g, colorRgb.b, 255)
         CommitRuntimeTexture(texture)
-        AddReplaceTexture("mainTexture", textureName, txd, txn)  
-    end  
+        AddReplaceTexture("mainTexture", textureName, txd, txn)
+    end
 end
